@@ -31,24 +31,21 @@ def part2():
     
     # Blink 75 times
     for _ in range(75):
-        updated_stones = []
-        for stone, count in stones.copy().items():
+        updated_stones = Counter()
+        for stone, count in stones.items():
             if stone == 0:
-                updated_stones.append((1, count))
+                updated_stones[1] += count
             elif (n_digits:=int(math.log10(stone) + 1)) % 2 == 0:
                 divisor = 10**(n_digits//2)
                 l = stone//divisor
                 r = stone - l*divisor
-                updated_stones.append((l, count))
-                updated_stones.append((r, count))
+                updated_stones[l] += count
+                updated_stones[r] += count
             else:
-                updated_stones.append((stone*2024, count))
-                
-            del stones[stone]
-        for stone, count in updated_stones:
-            stones[stone] += count
+                updated_stones[2024*stone] += count
+        stones = updated_stones
     print(stones.total())
     
-
+    
 part1()
 part2()
